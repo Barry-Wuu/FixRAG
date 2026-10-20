@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>智能家电维修问答系统</title>
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, "Segoe UI", "Microsoft YaHei", sans-serif; background: #f5f6f8; color: #222; height: 100vh; display: flex; flex-direction: column; }
+  header { background: #1f2d3d; color: #fff; padding: 0 20px; height: 56px; display: flex; align-items: center; gap: 24px; flex-shrink: 0; }
+  header .brand { font-weight: 700; font-size: 18px; }
+  nav { display: flex; gap: 8px; }
+  nav button { background: transparent; border: none; color: #cbd5e1; font-size: 15px; padding: 8px 14px; border-radius: 8px; cursor: pointer; }
+  nav button.active { background: #33475b; color: #fff; }
+  nav button:hover { color: #fff; }
+  main { flex: 1; overflow: hidden; display: flex; }
+  .view { flex: 1; display: none; overflow: auto; }
+  .view.active { display: flex; }
+  #chat-view { flex-direction: column; }
+  #messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .msg { max-width: 92%; padding: 10px 14px; border-radius: 12px; line-height: 1.6; word-break: break-word; }
+  .msg.user { align-self: flex-end; background: #2563eb; color: #fff; border-bottom-right-radius: 4px; }
+  .msg.bot { align-self: flex-start; background: #fff; border: 1px solid #e5e7eb; border-bottom-left-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,.04); width: 100%; max-width: 100%; }
+  .msg .meta { margin-top: 6px; font-size: 12px; color: #6b7280; }
+  .msg .content { white-space: normal; }
+  .cursor { display: inline-block; width: 8px; height: 1em; background: #2563eb; margin-left: 2px; vertical-align: -2px; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  #composer { display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid #e5e7eb; background: #fff; flex-shrink: 0; }
+  #composer input { flex: 1; border: 1px solid #d1d5db; border-radius: 10px; padding: 12px 14px; font-size: 15px; outline: none; }
+  #composer input:focus { border-color: #2563eb; }
+  #composer button { background: #2563eb; color: #fff; border: none; border-radius: 10px; padding: 0 22px; font-size: 15px; cursor: pointer; }
+  #composer button:disabled { background: #93c5fd; cursor: not-allowed; }
+  #about-view { flex-direction: column; padding: 28px; max-width: 920px; margin: 0 auto; width: 100%; }
+  #about-view h2 { margin-bottom: 14px; }
+  #about-card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 28px; line-height: 1.9; text-align: center; }
+  #about-card p { margin: 10px 0; color: #4b5563; }
+  #about-btn { display: inline-block; margin: 14px 0 6px; background: #2563eb; color: #fff; text-decoration: none; font-size: 16px; font-weight: 600; padding: 12px 28px; border-radius: 10px; }
+  #about-btn:hover { background: #1d4ed8; }
+  #about-hint { font-size: 13px; color: #9ca3af; }
+  code { background: #f3f4f6; padding: 1px 5px; border-radius: 4px; font-size: .92em; }
+  /* ---- 参考文档（答案末尾，默认折叠） ---- */
+  .refs { margin-top: 10px; border-top: 1px dashed #e5e7eb; padding-top: 8px; }
+  .refs summary { cursor: pointer; font-size: 13px; font-weight: 600; color: #2563eb; outline: none; user-select: none; }
+  .ref-body { margin-top: 6px; display: flex; flex-direction: column; gap: 8px; }
+  .ref-item { background: #f8fafc; border: 1px solid #eef2f7; border-radius: 8px; padding: 8px 10px; }
+  .ref-path { font-size: 12px; color: #475569; word-break: break-all; margin-bottom: 4px; }
+  .ref-path b { color: #0f172a; }
+  .ref-para { font-size: 13px; color: #334155; max-height: 200px; overflow: auto; white-space: normal; line-height: 1.6; }
+  .ref-para table { border-collapse: collapse; width: 100%; margin: 6px 0; font-size: 12px; }
+  .ref-para th, .ref-para td { border: 1px solid #cbd5e1; padding: 4px 6px; text-align: left; vertical-align: top; }
+  .ref-para img { max-width: 100%; border-radius: 4px; margin: 4px 0; }
+  .ref-para h1, .ref-para h2, .ref-para h3, .ref-para h4 { margin: 6px 0 4px; line-height: 1.3; }
+  .ref-para ul, .ref-para ol { padding-left: 20px; margin: 4px 0; }
+  /* ---- 思考过程 / 工具调用 ---- */
+  .trace { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 10px 14px; margin-bottom: 10px; font-size: 13px; line-height: 1.7; }
+  .trace summary { cursor: pointer; font-weight: 600; color: #93c5fd; user-select: none; outline: none; }
+  .trace.tool summary { color: #fbbf24; }
+  .trace-body { margin-top: 6px; }
+  .t-step { margin: 8px 0; padding-left: 10px; border-left: 3px solid #334155; }
+  .t-title { font-weight: 600; color: #cbd5e1; }
+  .t-lines { color: #cbd5e1; }
+  .t-line { white-space: pre-wrap; }
+  .t-tool { margin: 8px 0; padding-left: 10px; border-left: 3px solid #6366f1; }
+  .t-sub { margin: 6px 0 6px 10px; }
+  .t-subtitle { color: #a5b4fc; font-weight: 600; margin-bottom: 2px; }
+  .t-tbl { border-collapse: collapse; width: 100%; font-size: 12px; margin-top: 2px; }
+  .t-tbl td { border-bottom: 1px solid #1e293b; padding: 2px 6px; vertical-align: top; }
+  .t-tbl td:first-child { color: #fbbf24; width: 70px; white-space: nowrap; }
+  .t-src { color: #64748b !important; width: 130px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* ---- 数据库栏目（高频问答库 / 运行时缓存 / 向量库） ---- */
+  .db-view { flex-direction: column; padding: 24px; max-width: 1000px; margin: 0 auto; width: 100%; }
+  .db-view h2 { margin-bottom: 12px; font-size: 18px; }
+  .db-count { font-size: 13px; color: #9ca3af; font-weight: normal; margin-left: 8px; }
+  .db-hint { font-size: 12px; color: #94a3b8; margin: -6px 0 12px; }
+  .db-loading { color: #9ca3af; padding: 24px; text-align: center; }
+  .db-empty { color: #9ca3af; padding: 24px; text-align: center; }
+  .db-table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; overflow: auto; }
+  .db-table { border-collapse: collapse; width: 100%; font-size: 13px; }
+  .db-table th, .db-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #eef2f7; vertical-align: top; }
+  .db-table th { background: #f8fafc; color: #475569; font-weight: 600; white-space: nowrap; position: sticky; top: 0; }
+  .db-table tr:last-child td { border-bottom: none; }
+  .db-table td.qa { max-width: 380px; word-break: break-word; }
+  .db-table td.qa .qa-text {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; line-height: 1.5;
+  }
+  .db-table td.qa.expanded .qa-text {
+    -webkit-line-clamp: unset; display: block; max-height: 240px; overflow-y: auto;
+  }
+  .qa-btn {
+    display: inline-block; margin-top: 3px; font-size: 12px; color: #2563eb;
+    cursor: pointer; user-select: none; font-weight: 500;
+  }
+  .qa-btn:hover { text-decoration: underline; }
+  .db-table .nowrap { white-space: nowrap; }
+  .kb-stat { color: #64748b; font-size: 13px; margin-bottom: 10px; }
+  .kb-file { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; margin-bottom: 10px; overflow: hidden; }
+  .kb-file h3 { font-size: 14px; color: #0f172a; padding: 12px 16px; margin: 0; cursor: pointer; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: #f8fafc; }
+  .kb-file h3:hover { background: #f1f5f9; }
+  .kb-count { font-size: 12px; color: #2563eb; font-weight: 600; }
+  .kb-toggle { margin-left: auto; font-size: 12px; color: #2563eb; font-weight: 500; }
+  .kb-file .path { font-size: 12px; color: #64748b; word-break: break-all; margin: 0; padding: 6px 16px 0; }
+  .kb-chunks { display: none; }
+  .kb-file.expanded .kb-chunks { display: block; max-height: 480px; overflow-y: auto; }
+  .kb-block { border-top: 1px solid #e5e7eb; padding: 10px 16px; font-size: 13px; color: #334155; line-height: 1.6; }
+  .kb-block .qa-text { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.6; }
+  .kb-block.expanded .qa-text { -webkit-line-clamp: unset; display: block; }
+  .kb-block .qa-btn { margin-top: 4px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">家电维修助手</div>
+  <nav>
+    <button id="tab-chat" class="active" onclick="showTab('chat')">对话</button>
+    <button id="tab-hot" onclick="showTab('hot')">高频问答库</button>
+    <button id="tab-cache" onclick="showTab('cache')">运行时缓存</button>
+    <button id="tab-vector" onclick="showTab('vector')">向量库</button>
+    <button id="tab-about" onclick="showTab('about')">项目说明</button>
+  </nav>
+</header>
+<main>
+  <section id="chat-view" class="view active">
+    <div id="messages"></div>
+    <form id="composer" onsubmit="event.preventDefault(); send();">
+      <input id="input" placeholder="输入问题，回车发送…" autocomplete="off">
+      <button type="submit" id="sendBtn">发送</button>
+    </form>
+  </section>
+  <section id="hot-view" class="view db-view">
+    <h2>高频问答库 <span class="db-count" id="hot-count"></span></h2>
+    <div id="hot-body" class="db-loading">加载中…</div>
+  </section>
+  <section id="cache-view" class="view db-view">
+    <h2>运行时缓存 <span class="db-count" id="cache-count"></span></h2>
+    <p class="db-hint">通用知识不缓存 · 同义变体自动合并（语义相似 ≥ 0.75 命中/更新同一条）</p>
+    <div id="cache-body" class="db-loading">加载中…</div>
+  </section>
+  <section id="vector-view" class="view db-view">
+    <h2>向量库 <span class="db-count" id="vector-count"></span></h2>
+    <div id="vector-body" class="db-loading">加载中…</div>
+  </section>
+  <section id="about-view" class="view">
+    <h2>项目说明</h2>
+    <div id="about-card">
+      <p>项目说明已整合到仓库首页 README，内容始终与仓库保持同步，不再单独维护。</p>
+      <a id="about-btn" href="https://gitcode.com/Barry_Wu_/edurag" target="_blank" rel="noopener">📖 打开仓库首页查看完整项目说明</a>
+      <p id="about-hint">包含：项目介绍 · 功能特性 · 系统流程图（离线建库 + 在线问答）· 目录结构 · 配置 · API 文档 · FAQ</p>
+    </div>
+  </section>
+</main>
+<script>
+function showTab(name){
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById(name+'-view').classList.add('active');
+  if(name === 'hot' || name === 'cache' || name === 'vector') loadDb(name);
+}
+async function loadDb(name){
+  const map = {hot:'/db/hot_qa', cache:'/db/qa_cache', vector:'/db/vectorstore'};
+  const body = document.getElementById(name+'-body');
+  const count = document.getElementById(name+'-count');
+  body.className = 'db-loading'; body.textContent = '加载中…';
+  try{
+    const res = await fetch(map[name]);
+    const data = await res.json();
+    if(name === 'hot') renderHot(data, body, count);
+    else if(name === 'cache') renderCache(data, body, count);
+    else renderVector(data, body, count);
+  }catch(e){
+    body.className = 'db-empty'; body.textContent = '加载失败：' + e.message;
+  }
+}
+function qaCell(text, limit){
+  const t = esc(text);
+  const btn = text.length > limit
+    ? '<span class="qa-btn" onclick="toggleQa(this)">展开全部</span>'
+    : '';
+  return '<td class="qa"><span class="qa-text">'+t+'</span>'+btn+'</td>';
+}
+function toggleQa(btn){
+  const host = btn.closest('td, .kb-block');
+  const expanded = host.classList.toggle('expanded');
+  btn.textContent = expanded ? '收起' : '展开全部';
+}
+function renderHot(data, body, count){
+  const items = data.items || [];
+  count.textContent = items.length + ' 条';
+  if(!items.length){ body.className = 'db-empty'; body.textContent = '（空）'; return; }
+  body.className = 'db-table-wrap';
+  let html = '<table class="db-table"><thead><tr><th>问题</th><th>答案</th><th>命中</th><th>意图</th></tr></thead><tbody>';
+  items.forEach(it=>{
+    html += '<tr>'+qaCell(it.question, 30)+qaCell(it.answer, 50)+'<td>'+esc(String(it.hits))+'</td><td>'+esc(it.intent||'')+'</td></tr>';
+  });
+  body.innerHTML = html + '</tbody></table>';
+}
+function renderCache(data, body, count){
+  const items = data.items || [];
+  count.textContent = items.length + ' 条';
+  if(!items.length){ body.className = 'db-empty'; body.textContent = '（空）'; return; }
+  body.className = 'db-table-wrap';
+  let html = '<table class="db-table"><thead><tr><th>问题</th><th>答案</th><th>命中</th><th>更新时间</th><th>意图</th><th>策略</th></tr></thead><tbody>';
+  items.forEach(it=>{
+    html += '<tr>'+qaCell(it.question, 30)+qaCell(it.answer, 50)+'<td>'+esc(String(it.hits))+'</td><td class="nowrap">'+esc(it.updated_at||'')+'</td><td>'+esc(it.intent||'')+'</td><td>'+esc(it.strategy||'')+'</td></tr>';
+  });
+  body.innerHTML = html + '</tbody></table>';
+}
+function renderVector(data, body, count){
+  if(!data.built){
+    body.className = 'db-empty';
+    body.textContent = '向量库尚未构建（kb_store 为空，运行 build_kb.py 或 POST /build 后可见）';
+    return;
+  }
+  const files = data.files || [];
+  count.textContent = data.chunks + ' 个子块 · ' + data.dim + ' 维';
+  body.className = 'db-table-wrap';
+  let html = '<div class="kb-stat">共 ' + data.chunks + ' 个子块，embedding ' + data.dim + ' 维（约 ' + fmtBytes(data.bytes) + '），' + files.length + ' 个文件</div>';
+  files.forEach(f=>{
+    const name = (f.file_path || '').split(/[\\/]/).filter(Boolean).pop() || f.source || f.file_path;
+    html += '<div class="kb-file"><h3 onclick="toggleKbFile(this)">📄 ' + esc(name) +
+            ' <span class="kb-count">' + f.chunks + ' 个子块</span>' +
+            '<span class="kb-toggle">展开全部块</span></h3>' +
+            '<div class="path">' + esc(f.file_path) + '</div><div class="kb-chunks">';
+    (f.blocks||[]).forEach(b=>{
+      html += '<div class="kb-block"><span class="qa-text">' + esc(b.child_text) + '</span>' +
+              (b.child_text.length > 60 ? '<span class="qa-btn" onclick="toggleQa(this)">展开全部</span>' : '') +
+              '</div>';
+    });
+    html += '</div></div>';
+  });
+  body.innerHTML = html;
+}
+function toggleKbFile(h3){
+  const file = h3.closest('.kb-file');
+  const expanded = file.classList.toggle('expanded');
+  const btn = h3.querySelector('.kb-toggle');
+  btn.textContent = expanded ? '收起全部块' : '展开全部块';
+}
+function fmtBytes(n){
+  if(n >= 1024*1024) return (n/1024/1024).toFixed(1)+' MB';
+  if(n >= 1024) return (n/1024).toFixed(1)+' KB';
+  return n + ' B';
+}
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function md(s){
+  let t = esc(s);
+  t = t.replace(/`([^`]+)`/g,'<code>$1</code>');
+  t = t.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  t = t.replace(/\n/g,'<br>');
+  return t;
+}
+/* 参考文档原文：若含 HTML/Markdown 则按对应格式渲染（含表格、标题、列表、图片）；
+   先做轻量安全清洗（移除 <script>/<iframe>）以防注入；marked 不可用时回退最小渲染。 */
+function renderRich(el, text){
+  if(!text){ el.textContent = '（无原文）'; return; }
+  let t = String(text).trim();
+  t = t.replace(/<script[\s\S]*?<\/script>/gi, '')
+       .replace(/<iframe[\s\S]*?<\/iframe>/gi, '');
+  if(window.marked){
+    try { el.innerHTML = marked.parse(t); return; } catch(e){}
+  }
+  el.innerHTML = md(t);
+}
+function addMsg(role, html){
+  const div = document.createElement('div');
+  div.className = 'msg '+role;
+  if(html != null) div.innerHTML = html;
+  document.getElementById('messages').appendChild(div);
+  div.scrollIntoView({behavior:'smooth', block:'end'});
+  return div;
+}
+function setMeta(metaEl, ev){
+  const tags = [];
+  if(ev.intent) tags.push('意图：'+ev.intent);
+  if(ev.strategy) tags.push('策略：'+ev.strategy);
+  if(ev.cached===true) tags.push('缓存命中');
+  else if(ev.cached==='hot') tags.push('高频问答库命中');
+  metaEl.textContent = tags.join(' · ');
+}
+/* 在答案末尾插入“参考文档”面板（默认折叠，展开看原文段落） */
+function renderSources(bubble, metaEl, refs){
+  if(!refs || !refs.length) return;
+  const det = document.createElement('details'); det.className = 'refs';
+  const sum = document.createElement('summary');
+  sum.textContent = '📄 参考文档（' + refs.length + ' 条，点击展开原文段落）';
+  det.appendChild(sum);
+  const body = document.createElement('div'); body.className = 'ref-body';
+  refs.forEach((r, idx)=>{
+    const item = document.createElement('div'); item.className = 'ref-item';
+    const p = document.createElement('div'); p.className = 'ref-path';
+    p.innerHTML = '【资料' + (idx + 1) + '】📁 <b>' + esc(r.path || r.source || '(未知来源)') + '</b>'
+                + (r.score != null ? '  ·  检索得分 ' + r.score : '');
+    const para = document.createElement('div'); para.className = 'ref-para';
+    renderRich(para, r.paragraph || r.preview);
+    item.appendChild(p); item.appendChild(para);
+    body.appendChild(item);
+  });
+  det.appendChild(body);
+  bubble.insertBefore(det, metaEl);
+}
+/* ---------- 思考过程 / 工具调用 渲染 ---------- */
+function tLine(txt){ const d=document.createElement('div'); d.className='t-line'; d.textContent=txt; return d; }
+/* 仅当用户本就贴近底部时才自动跟随滚动，避免流式输出时把上滑查看历史的用户强行吸附到底部 */
+function nearBottom(){
+  const el = document.getElementById('messages');
+  return el.scrollHeight - el.scrollTop - el.clientHeight < 80;
+}
+function addTrace(body, ev){
+  const step = document.createElement('div'); step.className='t-step';
+  const h = document.createElement('div'); h.className='t-title'; h.textContent = ev.title || '步骤';
+  const ul = document.createElement('div'); ul.className='t-lines';
+  (ev.lines||[]).forEach(l=> ul.appendChild(tLine(l)));
+  step.appendChild(h); step.appendChild(ul);
+  body.appendChild(step);
+}
+function scoreTable(title, rows){
+  const wrap = document.createElement('div'); wrap.className='t-sub';
+  const t = document.createElement('div'); t.className='t-subtitle'; t.textContent = title;
+  const tbl = document.createElement('table'); tbl.className='t-tbl';
+  (rows||[]).forEach(r=>{
+    const tr = document.createElement('tr');
+    const c1 = document.createElement('td'); c1.textContent = (r.score!=null? r.score : '');
+    const c2 = document.createElement('td'); c2.textContent = r.snippet || '';
+    const c3 = document.createElement('td'); c3.className='t-src'; c3.textContent = r.source || '';
+    tr.appendChild(c1); tr.appendChild(c2); tr.appendChild(c3); tbl.appendChild(tr);
+  });
+  wrap.appendChild(t); wrap.appendChild(tbl);
+  return wrap;
+}
+function renderParents(parents){
+  const wrap = document.createElement('div'); wrap.className='t-sub';
+  const t = document.createElement('div'); t.className='t-subtitle';
+  t.textContent = '✅ 最终召回父块（子块 → 父块上下文，RRF 得分）';
+  const tbl = document.createElement('table'); tbl.className='t-tbl';
+  (parents||[]).forEach(p=>{
+    const tr = document.createElement('tr');
+    const c1 = document.createElement('td'); c1.textContent = p.score;
+    const c2 = document.createElement('td'); c2.textContent = '['+p.source+'] 子块: '+p.child_preview;
+    tr.appendChild(c1); tr.appendChild(c2); tbl.appendChild(tr);
+  });
+  wrap.appendChild(t); wrap.appendChild(tbl);
+  return wrap;
+}
+function renderSearchTrace(label, st){
+  const wrap = document.createElement('div'); wrap.className='t-sub';
+  const t = document.createElement('div'); t.className='t-subtitle';
+  t.textContent = '🔎 '+label+'：'+(st.query||'');
+  wrap.appendChild(t);
+  if(st.dense_top) wrap.appendChild(scoreTable('· 稠密向量检索 Top（余弦相似度）', st.dense_top));
+  if(st.sparse_top) wrap.appendChild(scoreTable('· 稀疏 BM25 检索 Top', st.sparse_top));
+  if(st.rrf_top) wrap.appendChild(scoreTable('· RRF 融合重排 Top', st.rrf_top));
+  if(st.selected_parents) wrap.appendChild(renderParents(st.selected_parents));
+  return wrap;
+}
+function addTool(body, ev){
+  const d = ev.data || {};
+  const box = document.createElement('div'); box.className='t-tool';
+  const h = document.createElement('div'); h.className='t-title';
+  h.textContent = '④ 混合检索（稠密向量 + 稀疏 BM25 + RRF 融合重排）';
+  box.appendChild(h);
+  const info = document.createElement('div'); info.className='t-lines';
+  info.appendChild(tLine('策略：'+ (d.strategy||'-') + ' — ' + (d.rationale||'')));
+  box.appendChild(info);
+  // —— 查询问题改写：有无改写 / 如何改写 ——
+  const rw = document.createElement('div'); rw.className='t-sub';
+  const rwTitle = document.createElement('div'); rwTitle.className='t-subtitle';
+  rwTitle.textContent = '✏️ 查询问题改写';
+  rw.appendChild(rwTitle);
+  const rwLines = document.createElement('div'); rwLines.className='t-lines';
+  const strat = d.strategy || '';
+  if(strat === 'direct' || strat === ''){
+    rwLines.appendChild(tLine('未改写：direct 策略直接使用原始问题检索'));
+  } else if(strat === 'hyde'){
+    rwLines.appendChild(tLine('已改写（HyDE）：先生成假设答案，再以其作为检索查询'));
+    if(d.hypothesis) rwLines.appendChild(tLine('↳ 假设答案：'+d.hypothesis));
+  } else if(strat === 'sub_query'){
+    rwLines.appendChild(tLine('已改写（子问题分解）：拆分为多个子问题分别检索后合并'));
+    if(d.sub_queries && d.sub_queries.length) rwLines.appendChild(tLine('↳ 子问题：'+d.sub_queries.join('  |  ')));
+  } else if(strat === 'backtrack'){
+    rwLines.appendChild(tLine('已改写（回溯改写）：依据初步回答回溯生成更精确的检索问句'));
+    if(d.rewritten_query) rwLines.appendChild(tLine('↳ 改写后问句：'+d.rewritten_query));
+  } else {
+    if(d.rewritten_query) rwLines.appendChild(tLine('↳ 改写后问句：'+d.rewritten_query));
+    else if(d.hypothesis) rwLines.appendChild(tLine('↳ 假设答案：'+d.hypothesis));
+    else if(d.sub_queries && d.sub_queries.length) rwLines.appendChild(tLine('↳ 子问题：'+d.sub_queries.join('  |  ')));
+    else rwLines.appendChild(tLine('（本次未产生查询改写）'));
+  }
+  rw.appendChild(rwLines);
+  box.appendChild(rw);
+  const traces = [];
+  if(d.sub_traces && d.sub_traces.length){
+    d.sub_traces.forEach((st,idx)=> traces.push({label:'子问题'+(idx+1), t:st.search_trace}));
+  } else if(d.search_trace){
+    traces.push({label:'检索', t:d.search_trace});
+  }
+  traces.forEach(tr=> box.appendChild(renderSearchTrace(tr.label, tr.t)));
+  body.appendChild(box);
+}
+async function send(){
+  const input = document.getElementById('input');
+  const q = input.value.trim();
+  if(!q) return;
+  input.value = '';
+  addMsg('user', md(q));
+  const btn = document.getElementById('sendBtn'); btn.disabled = true;
+
+  const bubble = addMsg('bot');
+  const content = document.createElement('div'); content.className='content'; content.innerHTML = '正在思考…';
+  const meta = document.createElement('div'); meta.className='meta';
+  bubble.appendChild(content); bubble.appendChild(meta);
+
+  // 思考过程 / 工具调用栏目：按事件流首次到达顺序懒创建（还没发生的不显示、不发生不显示）
+  let thinkEl = null, thinkBody = null, thinkContent = null;
+  let toolEl = null, toolBody = null;
+  const ensureThink = () => {
+    if (thinkEl) return thinkBody;
+    thinkEl = document.createElement('details'); thinkEl.className='trace'; thinkEl.open = true;
+    const sum = document.createElement('summary'); sum.textContent = '🧠 思考过程';
+    thinkBody = document.createElement('div'); thinkBody.className='trace-body';
+    thinkContent = document.createElement('div'); thinkContent.className='t-line think-line';
+    thinkBody.appendChild(thinkContent);
+    thinkEl.appendChild(sum); thinkEl.appendChild(thinkBody);
+    bubble.insertBefore(thinkEl, content);  // 插在答案正文前，保持与已创建栏目的事件到达顺序一致
+    return thinkBody;
+  };
+  const ensureTool = () => {
+    if (toolEl) return toolBody;
+    toolEl = document.createElement('details'); toolEl.className='trace tool'; toolEl.open = true;
+    const sum = document.createElement('summary'); sum.textContent = '🔧 工具调用';
+    toolBody = document.createElement('div'); toolBody.className='trace-body';
+    toolEl.appendChild(sum); toolEl.appendChild(toolBody);
+    bubble.insertBefore(toolEl, content);
+    return toolBody;
+  };
+
+  let full = '';
+  let thinkFull = '';
+  let refs = null;
+  const cursor = '<span class="cursor"></span>';
+  let started = false;
+  try{
+    const resp = await fetch('/query/stream', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({query:q})
+    });
+    if(!resp.ok || !resp.body) throw new Error('HTTP '+resp.status);
+    const reader = resp.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    for(;;){
+      const {done, value} = await reader.read();
+      if(done) break;
+      buffer += decoder.decode(value, {stream:true});
+      let idx;
+      while((idx = buffer.indexOf('\n\n')) >= 0){
+        const block = buffer.slice(0, idx); buffer = buffer.slice(idx+2);
+        const line = block.trim();
+        if(!line.startsWith('data:')) continue;
+        let ev; try{ ev = JSON.parse(line.slice(5).trim()); }catch(_){ continue; }
+        if(ev.type === 'think'){ ensureThink(); thinkFull += (ev.text||''); thinkContent.textContent = thinkFull; if(nearBottom()) thinkBody.scrollIntoView({block:'end'}); }
+        else if(ev.type === 'trace'){ ensureTool(); addTrace(toolBody, ev); if(nearBottom()) toolBody.scrollIntoView({block:'end'}); }
+        else if(ev.type === 'tool'){ ensureTool(); addTool(toolBody, ev); if(nearBottom()) toolBody.scrollIntoView({block:'end'}); }
+        else if(ev.type === 'meta'){ setMeta(meta, ev); refs = ev.sources || null; if(!started){ content.innerHTML=''; started=true; } }
+        else if(ev.type === 'delta'){ if(!started){ content.innerHTML=''; started=true; } full += ev.text; content.innerHTML = md(full) + cursor; if(nearBottom()) bubble.scrollIntoView({behavior:'smooth', block:'end'}); }
+        else if(ev.type === 'error'){ content.innerHTML = '⚠ '+esc(ev.message); }
+      }
+    }
+    content.innerHTML = full ? md(full) : '（无回答）';
+    renderSources(bubble, meta, refs);
+  }catch(e){
+    // 流式失败则回退到非流式 /query
+    try{
+      const r = await (await fetch('/query', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({query:q})})).json();
+      full = r.answer || '';
+      content.innerHTML = full ? md(full) : '（无回答）';
+      setMeta(meta, r);
+      renderSources(bubble, meta, r.sources || null);
+    }catch(e2){
+      content.innerHTML = '请求失败：'+esc(e2);
+    }
+  }finally{
+    if(thinkEl && !thinkFull) thinkContent.textContent = '（当前模型未返回 thinking 内容——可配置思考模型如 qwq-plus 查看）';
+    btn.disabled = false; input.focus();
+  }
+}
+</script>
+</body>
+</html>
