@@ -74,14 +74,40 @@ def query_service(q):
         return json.loads(r.read().decode("utf-8"))
 
 
-def llm_json(messages, default, retries=2):
+def _extract_json(text):
+    """从 LLM 输出稳健提取 JSON：兼容 ```json 代码块、前后多余文本与偶发截断；
+    解析失败时退化为正则提取关键布尔字段（relevant/supported）。"""
+    import re
+    if not text:
+        raise ValueError("empty response")
+    t = text.strip()
+    if t.startswith("```"):
+        t = t.strip("`")
+        if t.lstrip().lower().startswith("json"):
+            t = t.lstrip()[4:]
+        if "```" in t:
+            t = t[:t.rfind("```")]
+    s, e = t.find("{"), t.rfind("}")
+    if s != -1 and e != -1 and e > s:
+        t = t[s:e + 1]
+    try:
+        return json.loads(t)
+    except Exception:
+        m = re.search(r'"(relevant|supported)"\s*:\s*(true|false)', t, re.IGNORECASE)
+        if m:
+            return {m.group(1).lower(): m.group(2).lower() == "true"}
+        raise
+
+
+def llm_json(messages, default, retries=3):
     for i in range(retries):
         try:
-            text = dashscope.chat(messages, model=EVAL_LLM, temperature=0)
-            return json.loads(text)
+            time.sleep(2)  # 降低请求频率，规避 DashScope 限流
+            text = dashscope.chat(messages, model=EVAL_LLM, temperature=0, max_tokens=2048)
+            return _extract_json(text)
         except Exception as e:
             print(f"    [llm重试{i+1}] {e}")
-            time.sleep(2)
+            time.sleep(3)
     return default
 
 

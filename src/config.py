@@ -46,7 +46,7 @@ DASHSCOPE_BASE_URL = os.getenv(
     "FIXRAG_BASE_URL", "https://dashscope.aliyuncs.com/compatible-mode/v1"
 )
 EMBED_MODEL = os.getenv("FIXRAG_EMBED_MODEL", "text-embedding-v1")  # 1536 维
-LLM_MODEL = os.getenv("FIXRAG_LLM_MODEL", "qwen-plus")             # 你 key 可用：qwen-max/plus/turbo/long
+LLM_MODEL = os.getenv("FIXRAG_LLM_MODEL", "qwen-max")             # 你 key 可用：qwen-max/plus/turbo/long
 
 
 def _load_openrouter_key() -> str:
@@ -73,13 +73,8 @@ USE_LLM_INTENT = os.getenv("FIXRAG_USE_LLM_INTENT", "1") == "1"  # 0=关闭 LLM 
 
 # ---- OpenRouter 免费生成模型（DashScope 免费配额耗尽/失败时自动回退）----
 # 逗号分隔的回退链：前一个模型被上游限流(429)/不可用(404)/失败时，自动尝试下一个。
-OPENROUTER_GEN_MODEL = os.getenv(
-    "FIXRAG_GEN_LLM_MODEL",
-    "minimax/minimax-m3.1-flash:free,"
-    "nvidia/nemotron-3.5-lightning:free,"
-    "dots-studio/dots-3-note-preview:free,"
-    "google/gemma-4-31b-it:free",
-)
+# OpenRouter 免费模型当前普遍限流(429)，暂置空以直连 DashScope；恢复时填回回退链即可
+OPENROUTER_GEN_MODEL = os.getenv("FIXRAG_GEN_LLM_MODEL", "")
 OPENROUTER_GEN_BASE_URL = os.getenv(
     "FIXRAG_GEN_LLM_BASE_URL", "https://openrouter.ai/api/v1"
 )
