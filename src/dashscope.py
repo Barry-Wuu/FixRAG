@@ -147,23 +147,24 @@ def _openrouter_stream(messages, model=None, temperature=0.7, max_tokens=1024):
 # 对外接口：优先 DashScope，失败自动回退 OpenRouter
 # ---------------------------------------------------------------------------
 
-def chat(messages, model=None, temperature=0.7, max_tokens=1024):
-    """非流式对话。DashScope 生成额度已用光，优先 OpenRouter 免费模型链；失败再回退 DashScope。"""
+def chat(messages, model=None, temperature=0.7, max_tokens=1024, enable_thinking=None):
+    """非流式对话。DashScope 生成额度已用光，优先 OpenRouter 免费模型链；失败再回退 DashScope。
+    enable_thinking=None 表示不额外控制；评测可传 False 关闭深度思考以提速。"""
     try:
         return _openrouter_chat_any(messages, temperature, max_tokens)
     except Exception as e:
         print(f"[llm] OpenRouter 免费模型均失败({str(e)[:100]})，回退 DashScope")
         try:
             model = model or config.LLM_MODEL
-            resp = _post(
-                "/chat/completions",
-                {
-                    "model": model,
-                    "messages": messages,
-                    "temperature": temperature,
-                    "max_tokens": max_tokens,
-                },
-            )
+            payload = {
+                "model": model,
+                "messages": messages,
+                "temperature": temperature,
+                "max_tokens": max_tokens,
+            }
+            if enable_thinking is not None:
+                payload["enable_thinking"] = enable_thinking
+            resp = _post("/chat/completions", payload)
             return resp["choices"][0]["message"]["content"].strip()
         except Exception as e2:
             raise RuntimeError(f"OpenRouter 与 DashScope 生成均失败: {e2}") from e2

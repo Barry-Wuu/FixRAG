@@ -2,7 +2,7 @@
 """RAGAS 指标评测：检索相关性 / 检索召回率 / 生成忠实度 / 生成相关性。
 
 基于 RAGAS 官方指标定义，对本机 智能家电维修问答系统 服务（http://127.0.0.1:8000/query）实际评测：
-- 评估 LLM：DashScope qwen-plus（FIXRAG_EVAL_LLM 可覆盖）
+- 评估 LLM：DashScope qwen-max（非思考模型，FIXRAG_EVAL_LLM 可覆盖；默认关闭深度思考以加快评测）
 - Embedding：DashScope text-embedding-v1（计算生成相关性的假设问题与原问题相似度）
 - 测试集：6 条专业咨询问题 + 人工标准答案（ground_truth，供检索召回率用）
 
@@ -29,7 +29,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 import config
 import dashscope
 
-EVAL_LLM = os.getenv("FIXRAG_EVAL_LLM", config.LLM_MODEL)
+EVAL_LLM = os.getenv("FIXRAG_EVAL_LLM", "qwen-max")  # 默认非思考模型，避免评测时深度思考拖慢速度
 EMBED_MODEL = config.EMBED_MODEL
 BASE = "http://127.0.0.1:8000"
 HYP_Q_NUM = 3
@@ -103,7 +103,7 @@ def llm_json(messages, default, retries=3):
     for i in range(retries):
         try:
             time.sleep(2)  # 降低请求频率，规避 DashScope 限流
-            text = dashscope.chat(messages, model=EVAL_LLM, temperature=0, max_tokens=2048)
+            text = dashscope.chat(messages, model=EVAL_LLM, temperature=0, max_tokens=2048, enable_thinking=False)
             return _extract_json(text)
         except Exception as e:
             print(f"    [llm重试{i+1}] {e}")
