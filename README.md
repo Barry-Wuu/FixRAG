@@ -264,7 +264,7 @@ D:\models\fixrag\
 | | | | `intent` | 意图分类（专业咨询 / AI 相关通用知识等） |
 | | | | `strategy` | 回答策略（direct / hyde / sub_query / backtrack） |
 | | | | `embedding` | 问题向量（JSON 数组），用于语义去重与同义命中 |
-| `kb_store`<br/>知识库向量库 | FAISS/numpy | `chunks.json` + `embeddings.npy` | `child_id` | 子块 ID（形如 `doc_0_parent_0_child_0`） |
+| `kb_store`<br/>知识库向量库 | numpy 暴力遍历 + BM25 | `chunks.json` + `embeddings.npy` | `child_id` | 子块 ID（形如 `doc_0_parent_0_child_0`） |
 | | | | `parent_id` | 父块 ID（形如 `doc_0_parent_0`） |
 | | | | `child_text` | 子块文本（精确检索与前端展示） |
 | | | | `parent_text` | 父块文本（作为上下文送入 LLM） |
@@ -272,6 +272,12 @@ D:\models\fixrag\
 | | | | `file_path` | 源文件路径 |
 
 > `hot_qa` 与 `qa_cache` 同存于 `kb_store/qa.db`（SQLite，纯本地，无需服务器）；向量库由 `chunks.json`（元数据）+ `embeddings.npy`（稠密向量）构成。
+
+**向量索引算法**：`kb_store` 不依赖 FAISS / HNSW / 倒排索引等第三方向量库，采用「稠密全量遍历 + 稀疏 BM25」双路检索，再经 RRF 融合重排：
+
+- **稠密路（embeddings.npy）**：无索引结构，**全量线性扫描（暴力遍历 / 精确最近邻）**。检索时用 numpy 矩阵乘法一次性计算查询向量与全部 N 个子块的点积，除以范数得到余弦相似度，直接取 Top-K。复杂度 O(N×D)，精确无召回损失；代价是子块数增大时检索耗时线性增长（当前知识库规模下毫秒级，完全够用）。
+- **稀疏路（BM25）**：中文按单字、英文/数字按词分词；预计算文档频率 `df` 与逆文档频率 `idf`（k1=1.5，b=0.75），打分阶段遍历全部文档逐项累加 BM25 得分——本质是「词频统计 + 遍历打分」，并未构建真正的倒排链表。
+- **融合**：两路排名用 **RRF（Reciprocal Rank Fusion，倒数排名融合）** 合并：`rrf = 1/(60 + dense_rank) + 1/(60 + sparse_rank)`；再按 `parent_id` 去重，实现「子块召回、父块作上下文」。
 
 ---
 
