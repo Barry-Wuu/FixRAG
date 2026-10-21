@@ -122,6 +122,76 @@ flowchart TD
 
 ---
 
+### API 接口
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| GET | `/health` | 健康检查，返回 `{"status":"ok"}` |
+| POST | `/query` | 非流式问答，body `{"query":"..."}`，返回 `answer / intent / strategy / sources / cached` |
+| POST | `/query/stream` | 流式问答（SSE），逐段返回事件 |
+| POST | `/build` | 重建知识库索引，返回 `documents / chunks / seeded_hot_qa` |
+| POST | `/seed` | 把 `seed_qa.json` 灌入高频问答库 |
+| GET | `/stats` | 数据库统计：高频问答条数、缓存条数、热门缓存 |
+| GET | `/db/hot_qa` | 高频问答库全表内容（问题 / 答案 / 命中 / 意图） |
+| GET | `/db/qa_cache` | 运行时缓存全表内容（问题 / 答案 / 命中 / 时间 / 意图 / 策略） |
+| GET | `/db/vectorstore` | 向量库内容：源文件统计、子块数、向量维度与体积 |
+| POST | `/db/qa_cache/purge` | 手动清理通用知识缓存 + 补算缺失 embedding，返回 `purged / backfilled` |
+
+**`/query/stream` 事件类型**（`data: {json}` 逐行推送）：
+
+| 事件 | 说明 |
+| --- | --- |
+| `think` | LLM 的 thinking 内容（`reasoning_content`，仅思考模型返回） |
+| `trace` | 流程步骤日志（高频库命中 / 缓存 / 意图识别等） |
+| `tool` | 检索工具细节（策略、得分、召回来源等 trace） |
+| `meta` | `{ intent, strategy, sources, cached }`，`sources` 含 `path / score / paragraph` |
+| `delta` | 回答正文增量（前端逐字渲染） |
+| `done` | 流结束 |
+| `error` | 出错信息 |
+
+---
+
+### 前端交互（内置页面）
+
+- **对话**：输入问题，逐字流式渲染回答；回答上方分两个**独立面板**：
+  - **🧠 思考过程**：展示 LLM 流式返回的 thinking 内容（`reasoning_content`，需思考模型如 `qwq-plus`；非思考模型显示提示）；
+  - **🔧 工具调用**：展示系统流程步骤（高频库命中 / 缓存 / 意图识别）与检索工具细节（策略选择、改写/分解、稠密/BM25/RRF 得分、最终召回父块）。
+- **参考文档**：每条标注 **【资料N】** + 真实文件路径 + 检索得分，展开显示原文段落；原文含 HTML（表格）或 Markdown 时按对应格式渲染。
+- **高频问答库**：全表展示预置高频问答对（问题 / 答案 / 命中次数 / 意图）。
+- **运行时缓存**：全表展示问答缓存（问题 / 答案 / 命中 / 更新时间 / 意图 / 策略）；通用知识不缓存，Jev 确认同义的变体才合并为同一条目，切换栏目时自动刷新。
+- **向量库**：展示 `kb_store` 向量库内容——源文档文件列表、每个文件的子块数与文本预览，以及总子块数 / embedding 维度 / 体积。
+- **项目说明**：顶部切换，显示**仓库首页链接卡片**——完整项目介绍统一维护在 GitCode 仓库首页 README，前端不再单独维护说明内容。
+- 页面依赖 CDN（marked.js），浏览器需联网。
+
+---
+
+### 知识库构建与维护
+
+1. 把家电维修手册、故障案例库等文档放入 `data/docs/`（支持 `.md` / `.pdf`）。
+2. 执行 `python build_kb.py`（或调用 `POST /build`），系统会：加载文档 → 父/子分块 → DashScope 向量化 → 保存到 `kb_store/`。
+3. 文档更新后重新构建即可；构建会消耗一次向量化调用，之后启动自动跳过。
+4. `seed_qa.json` 中的高频问答可随时用 `POST /seed` 灌入，命中即返回、不再调用 LLM。
+
+---
+
+### 文本归一化
+
+为减少字符形态差异对向量检索的干扰，系统在**入库**与**查询**两侧对文本做统一归一化：
+
+- 入库：`loader._normalize` 对文档文本先做 Unicode **NFKC**，再用 `src/radical_map.py` 的映射表清洗剩余变体字符。
+- 查询：`pipeline` 对用户 query 做同样的归一化，保证两侧一致。
+- `src/radical_map.py` 由官方 `UnicodeData.txt` 生成：合计 300+ 条映射，覆盖常见变体字符。
+
+---
+
+### 说明
+
+- embedding 使用 DashScope **`text-embedding-v1`**（1536 维）；生成 LLM 默认走 **OpenRouter 免费模型链**（由 `FIXRAG_GEN_LLM_MODEL` 配置，DashScope `qwen-plus` 仅作兜底，可在 `.env` 修改）。
+- 原项目用 bge-m3 本地混合编码 + Milvus；本项目用 DashScope 云端 embedding + 轻量 numpy 向量库，达到"功能相同"的效果，本机即可直接运行。
+- `kb_store/`、`.venv/`、`.env` 已被 `.gitignore` 排除，不会误提交。
+
+---
+
 ## 六、目录结构
 
 ```
@@ -243,69 +313,9 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 十一、API 接口
 
-| 方法 | 路径 | 说明 |
-| --- | --- | --- |
-| GET | `/health` | 健康检查，返回 `{"status":"ok"}` |
-| POST | `/query` | 非流式问答，body `{"query":"..."}`，返回 `answer / intent / strategy / sources / cached` |
-| POST | `/query/stream` | 流式问答（SSE），逐段返回事件 |
-| POST | `/build` | 重建知识库索引，返回 `documents / chunks / seeded_hot_qa` |
-| POST | `/seed` | 把 `seed_qa.json` 灌入高频问答库 |
-| GET | `/stats` | 数据库统计：高频问答条数、缓存条数、热门缓存 |
-| GET | `/db/hot_qa` | 高频问答库全表内容（问题 / 答案 / 命中 / 意图） |
-| GET | `/db/qa_cache` | 运行时缓存全表内容（问题 / 答案 / 命中 / 时间 / 意图 / 策略） |
-| GET | `/db/vectorstore` | 向量库内容：源文件统计、子块数、向量维度与体积 |
-| POST | `/db/qa_cache/purge` | 手动清理通用知识缓存 + 补算缺失 embedding，返回 `purged / backfilled` |
 
-**`/query/stream` 事件类型**（`data: {json}` 逐行推送）：
-
-| 事件 | 说明 |
-| --- | --- |
-| `think` | LLM 的 thinking 内容（`reasoning_content`，仅思考模型返回） |
-| `trace` | 流程步骤日志（高频库命中 / 缓存 / 意图识别等） |
-| `tool` | 检索工具细节（策略、得分、召回来源等 trace） |
-| `meta` | `{ intent, strategy, sources, cached }`，`sources` 含 `path / score / paragraph` |
-| `delta` | 回答正文增量（前端逐字渲染） |
-| `done` | 流结束 |
-| `error` | 出错信息 |
-
----
-
-## 十二、前端交互（内置页面）
-
-- **对话**：输入问题，逐字流式渲染回答；回答上方分两个**独立面板**：
-  - **🧠 思考过程**：展示 LLM 流式返回的 thinking 内容（`reasoning_content`，需思考模型如 `qwq-plus`；非思考模型显示提示）；
-  - **🔧 工具调用**：展示系统流程步骤（高频库命中 / 缓存 / 意图识别）与检索工具细节（策略选择、改写/分解、稠密/BM25/RRF 得分、最终召回父块）。
-- **参考文档**：每条标注 **【资料N】** + 真实文件路径 + 检索得分，展开显示原文段落；原文含 HTML（表格）或 Markdown 时按对应格式渲染。
-- **高频问答库**：全表展示预置高频问答对（问题 / 答案 / 命中次数 / 意图）。
-- **运行时缓存**：全表展示问答缓存（问题 / 答案 / 命中 / 更新时间 / 意图 / 策略）；通用知识不缓存，Jev 确认同义的变体才合并为同一条目，切换栏目时自动刷新。
-- **向量库**：展示 `kb_store` 向量库内容——源文档文件列表、每个文件的子块数与文本预览，以及总子块数 / embedding 维度 / 体积。
-- **项目说明**：顶部切换，显示**仓库首页链接卡片**——完整项目介绍统一维护在 GitCode 仓库首页 README，前端不再单独维护说明内容。
-- 页面依赖 CDN（marked.js），浏览器需联网。
-
----
-
-## 十三、知识库构建与维护
-
-1. 把家电维修手册、故障案例库等文档放入 `data/docs/`（支持 `.md` / `.pdf`）。
-2. 执行 `python build_kb.py`（或调用 `POST /build`），系统会：加载文档 → 父/子分块 → DashScope 向量化 → 保存到 `kb_store/`。
-3. 文档更新后重新构建即可；构建会消耗一次向量化调用，之后启动自动跳过。
-4. `seed_qa.json` 中的高频问答可随时用 `POST /seed` 灌入，命中即返回、不再调用 LLM。
-
----
-
-## 十四、文本归一化
-
-为减少字符形态差异对向量检索的干扰，系统在**入库**与**查询**两侧对文本做统一归一化：
-
-- 入库：`loader._normalize` 对文档文本先做 Unicode **NFKC**，再用 `src/radical_map.py` 的映射表清洗剩余变体字符。
-- 查询：`pipeline` 对用户 query 做同样的归一化，保证两侧一致。
-- `src/radical_map.py` 由官方 `UnicodeData.txt` 生成：合计 300+ 条映射，覆盖常见变体字符。
-
----
-
-## 十五、RAGAS 评测
+## 十一、RAGAS 评测
 
 用 RAGAS 框架的四个经典指标对本系统做**实际评测**（脚本 `eval/ragas_eval.py`），验证检索与生成两个侧面的质量：
 
@@ -332,7 +342,7 @@ cd /d D:\models\edurag
 
 ---
 
-## 十六、常见问题（FAQ）
+## 十二、常见问题（FAQ）
 
 **Q1：启动时提示端口被占用？**
 旧 uvicorn 进程仍占用 8000 端口。用 `netstat -ano | findstr :8000` 找到 PID，`taskkill /PID <pid> /F` 后重新运行 `run.bat`。
@@ -351,8 +361,3 @@ cd /d D:\models\edurag
 
 ---
 
-## 十七、说明
-
-- embedding 使用 DashScope **`text-embedding-v1`**（1536 维）；生成 LLM 默认走 **OpenRouter 免费模型链**（由 `FIXRAG_GEN_LLM_MODEL` 配置，DashScope `qwen-plus` 仅作兜底，可在 `.env` 修改）。
-- 原项目用 bge-m3 本地混合编码 + Milvus；本项目用 DashScope 云端 embedding + 轻量 numpy 向量库，达到"功能相同"的效果，本机即可直接运行。
-- `kb_store/`、`.venv/`、`.env` 已被 `.gitignore` 排除，不会误提交。
