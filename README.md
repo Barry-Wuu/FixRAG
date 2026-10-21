@@ -93,7 +93,7 @@
 ```mermaid
 flowchart TD
     subgraph OFF[离线建库 · build_kb.py / POST /build]
-        K[知识库源文档<br/>data/docs · .md/.pdf] --> L[文档加载解析<br/>PyMuPDF / Markdown]
+        K[知识库源文档<br/>docs · .md/.pdf] --> L[文档加载解析<br/>PyMuPDF / Markdown]
         L --> M[文本归一化<br/>康熙部首 → 标准汉字]
         M --> N[父/子递归分块<br/>子块检索 · 父块上下文]
         N --> O[DashScope 向量化<br/>text-embedding-v1]
@@ -135,7 +135,7 @@ flowchart TD
    - **混合检索**：DashScope `text-embedding-v1` 稠密向量 + BM25 稀疏检索，RRF 融合重排。
    - **召回**：子块召回后取所属**父块**作为上下文，保证答案依据完整。
    - **生成**：LLM 依据召回的 topK 父块上下文作答，并返回 `sources` 参考信息。
-4. **离线建库**：`data/docs` 文档（MD/PDF）→ 父/子分块 → DashScope 向量化 → 持久化到 `kb_store/`。
+4. **离线建库**：`docs` 文档（MD/PDF）→ 父/子分块 → DashScope 向量化 → 持久化到 `kb_store/`。
 
 ---
 
@@ -184,7 +184,7 @@ flowchart TD
 
 ### 知识库构建与维护
 
-1. 把家电维修手册、故障案例库等文档放入 `data/docs/`（支持 `.md` / `.pdf`）。
+1. 把家电维修手册、故障案例库等文档放入 `docs/`（支持 `.md` / `.pdf`）。
 2. 执行 `python build_kb.py`（或调用 `POST /build`），系统会：加载文档 → 父/子分块 → DashScope 向量化 → 保存到 `kb_store/`。
 3. 文档更新后重新构建即可；构建会消耗一次向量化调用，之后启动自动跳过。
 4. `seed_qa.json` 中的高频问答可随时用 `POST /seed` 灌入，命中即返回、不再调用 LLM。
@@ -214,7 +214,7 @@ flowchart TD
 ### 目录结构
 
 ```
-D:\models\edurag\
+D:\models\fixrag\
 ├── app.py                 # FastAPI 服务入口（/query /query/stream /build /seed /stats /health /db/*）
 ├── build_kb.py            # 知识库索引构建脚本（命令行一键建库）
 ├── run.bat                # Windows 一键启动脚本（已建库时自动跳过向量化）
@@ -222,8 +222,7 @@ D:\models\edurag\
 ├── seed_qa.json           # 高频问答种子数据（可灌入 hot_qa）
 ├── .env.example           # 配置模板（复制为 .env 使用）
 ├── .gitignore             # 已忽略 .venv/ kb_store/ .env 等
-├── data/
-│   └── docs/              # 知识库源文档（.md / .pdf）
+├── docs/                  # 知识库源文档（.md / .pdf）
 ├── docs_project/          # 项目文档（如 RAG 流程图 PDF，原 docs/ 改名）
 ├── eval/
 │   └── ragas_eval.py      # RAGAS 四指标评测脚本（检索相关性/检索召回率/生成忠实度/生成相关性）
@@ -270,8 +269,8 @@ uvicorn
 # DashScope API Key（必填）
 DASHSCOPE_API_KEY=sk-ws-xxxxxxxxxxxxxxxxxxxxxxxx
 
-# 知识库源文档目录（仓库内默认 data/docs，可用此变量覆盖）
-FIXRAG_DATA_DIR=D:\models\edurag\data\docs
+# 知识库源文档目录（仓库内默认 docs，可用此变量覆盖）
+FIXRAG_DATA_DIR=D:\models\fixrag\docs
 
 # 意图识别模型路径
 FIXRAG_MODEL_PATH=D:\models\FIXRAG.rf.joblib
@@ -296,14 +295,14 @@ FIXRAG_EMBED_MODEL=text-embedding-v1
 ### 在本机（Windows）运行
 
 ```bat
-cd /d D:\models\edurag
+cd /d D:\models\fixrag
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
 
 REM 可选：显式设置（不设置也能自动从 D:\B++\.env 读取）
 set DASHSCOPE_API_KEY=sk-ws-xxxx
-set FIXRAG_DATA_DIR=D:\models\edurag\data\docs
+set FIXRAG_DATA_DIR=D:\models\fixrag\docs
 set FIXRAG_MODEL_PATH=D:\models\FIXRAG.rf.joblib
 
 REM 1) 构建知识库索引（只需一次，之后缓存到 kb_store/）
@@ -322,7 +321,7 @@ uvicorn app:app --host 127.0.0.1 --port 8000
 ### （可选）在 WSL 中运行
 
 ```bash
-cd /mnt/d/models/edurag
+cd /mnt/d/models/fixrag
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 # 路径改用 /mnt/d/... 形式；注意 WSL 需能访问外网才能调用 DashScope
@@ -355,7 +354,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 **重新评测**（需先启动服务）：
 ```bat
-cd /d D:\models\edurag
+cd /d D:\models\fixrag
 .venv\Scripts\python.exe eval\ragas_eval.py
 ```
 

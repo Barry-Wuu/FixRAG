@@ -1,0 +1,21 @@
+[vectorstore] 已加载本地索引，共 8 子块
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:59113 - "POST /query HTTP/1.1" 200 OK
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:56665 - "POST /query HTTP/1.1" 200 OK
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:57753 - "POST /query HTTP/1.1" 200 OK
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:58694 - "POST /query HTTP/1.1" 200 OK
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:63124 - "POST /query HTTP/1.1" 200 OK
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:63855 - "POST /query HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58080 - "GET / HTTP/1.1" 304 Not Modified
+INFO:     127.0.0.1:58097 - "POST /query/stream HTTP/1.1" 200 OK
+[llm] OpenRouter 流式均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+INFO:     127.0.0.1:58122 - "GET /db/hot_qa HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58122 - "GET /db/qa_cache HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58168 - "GET /db/qa_cache HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58267 - "POST /query/stream HTTP/1.1" 200 OK
+[llm] OpenRouter 流式均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope

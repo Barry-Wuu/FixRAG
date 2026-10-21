@@ -1,0 +1,322 @@
+评估 LLM: qwen-max | Embedding: text-embedding-v1
+已清空运行时缓存（删除 6 条）
+[1/6] 问题: 空调显示E1是什么意思？
+  检索上下文 2 个，回答 226 字
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索相关性: 7/16
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索召回率: 7/7
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成忠实度: 7/8
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成相关性: 0.801 (3个假设问题)
+
+[2/6] 问题: 空调不制冷常见原因有哪些？
+  检索上下文 2 个，回答 549 字
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索相关性: 5/16
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索召回率: 4/9
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成忠实度: 25/32
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成相关性: 0.857 (3个假设问题)
+
+[3/6] 问题: 洗衣机不脱水是什么原因？
+  检索上下文 2 个，回答 439 字
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索相关性: 1/16
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索召回率: 5/7
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成忠实度: 15/18
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成相关性: 0.699 (3个假设问题)
+
+[4/6] 问题: 冰箱冷藏室结冰怎么处理？
+  检索上下文 2 个，回答 481 字
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索相关性: 0/16
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索召回率: 0/8
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成忠实度: 1/17
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成相关性: 0.718 (3个假设问题)
+
+[5/6] 问题: 洗衣机显示E4错误代码是什么意思？
+  检索上下文 2 个，回答 333 字
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索相关性: 4/16
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索召回率: 0/6
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成忠实度: 7/11
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成相关性: 0.933 (3个假设问题)
+
+[6/6] 问题: 冰箱不制冷但里面的灯还亮，是什么问题？
+  检索上下文 2 个，回答 617 字
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索相关性: 4/16
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  检索召回率: 3/7
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成忠实度: 10/20
+[llm] OpenRouter 免费模型均失败(所有 OpenRouter 免费模型均失败: None)，回退 DashScope
+  生成相关性: 0.728 (3个假设问题)
+
+========================================================
+RAGAS 评测汇总（样本均值）
+========================================================
+检索相关性: 0.219
+检索召回率: 0.431
+生成忠实度: 0.614
+生成相关性: 0.789
+========================================================
+  空调显示E1是什么意思？... | 相关=0.44 召回=1.00 忠实=0.88 相关生成=0.80
+  空调不制冷常见原因有哪些？... | 相关=0.31 召回=0.44 忠实=0.78 相关生成=0.86
+  洗衣机不脱水是什么原因？... | 相关=0.06 召回=0.71 忠实=0.83 相关生成=0.70
+  冰箱冷藏室结冰怎么处理？... | 相关=0.00 召回=0.00 忠实=0.06 相关生成=0.72
+  洗衣机显示E4错误代码是什么意思？... | 相关=0.25 召回=0.00 忠实=0.64 相关生成=0.93
+  冰箱不制冷但里面的灯还亮，是什么问题？... | 相关=0.25 召回=0.43 忠实=0.50 相关生成=0.73

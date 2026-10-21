@@ -1,13 +1,13 @@
 @echo off
 REM ===== 家电维修问答系统 Windows launcher (uses local Python at D:\B++\py313) =====
-cd /d D:\models\edurag
+cd /d D:\models\fixrag
 
 REM Path to your Python 3.13 interpreter
 set PY=D:\B++\py313\python.exe
 
 REM Optional: uncomment and set your key / paths (omit to auto-read from D:\B++\.env)
 REM set DASHSCOPE_API_KEY=sk-ws-xxxx
-REM set FIXRAG_DATA_DIR=D:\models\edurag\data\docs
+REM set FIXRAG_DATA_DIR=D:\models\fixrag\docs
 REM set FIXRAG_MODEL_PATH=D:\models\FIXRAG.rf.joblib
 
 REM 1) Create venv if missing (reuse base packages via --system-site-packages)

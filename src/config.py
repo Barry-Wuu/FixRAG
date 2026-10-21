@@ -3,7 +3,7 @@ import os
 import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent  # D:\models\edurag
+BASE_DIR = Path(__file__).resolve().parent.parent  # D:\models\fixrag
 
 
 def _read_env_file(path: str) -> dict:
@@ -121,8 +121,8 @@ INTENT_NAMES = {
     LABEL_CONSULT: "专业咨询(家电维修)",
 }
 
-# ---- 知识库源文档目录（优先仓库内 data/docs，回退外部原项目路径）----
-_INREPO_DATA = BASE_DIR / "data" / "docs"
+# ---- 知识库源文档目录（优先仓库内 docs，回退外部原项目路径）----
+_INREPO_DATA = BASE_DIR / "docs"
 _EXTERNAL_DATA = Path(
     r"D:\外部家电资料\data\docs"
 )
