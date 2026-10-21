@@ -1,11 +1,11 @@
 # 智能家电维修问答系统
 
-> 功能等同原 `Itcast_qa_system`，但**自包含、依赖最少**，按 `RAG项目流程图简版.pdf` 的流程实现。
+> 本系统**自包含、依赖最少**，按 `RAG项目流程图简版.pdf` 的流程实现。
 > 服务运行在**本机（Windows）**，DashScope 的 embedding / LLM 调用由本机直接发起；WSL 仅作为可选部署方式。
 
 ---
 
-## 业务场景与项目背景
+## 一、业务场景与项目背景
 
 > 以下业务场景与使用描述整理自 EduRAG 场景模板库「1.39 智能家电维修问答系统（FixSmart AI）」第 15 节 1.1~1.5。
 
@@ -39,7 +39,7 @@
 
 ---
 
-## 一、项目介绍
+## 二、项目介绍
 
 这是一个面向「智能家电维修」售后/咨询场景的 RAG（Retrieval-Augmented Generation）问答系统。用户提出问题后，系统会：
 
@@ -51,7 +51,7 @@
 
 ---
 
-## 二、功能特性
+## 三、功能特性
 
 | 特性 | 说明 |
 | --- | --- |
@@ -71,7 +71,7 @@
 
 ---
 
-## 三、系统流程图
+## 四、系统流程图
 
 ```mermaid
 flowchart TD
@@ -106,7 +106,7 @@ flowchart TD
 
 ---
 
-## 四、处理流程详解
+## 五、处理流程详解
 
 1. **高频问答库 + 缓存**：先查本地 SQLite 高频问答库（精确命中直接返回），再查运行时缓存（精确命中直接返回；语义相似候选还需 Jev 判定同义后才命中，句式相同但关键信息不同——如换品牌/型号——不命中），均无需网络。
 2. **意图识别（两级二分类）**：随机森林输出 `0=通用知识 / 1=专业咨询` 二分类原始结果，再分两级逐步判定，每级都是更聚焦的二分类：
@@ -122,7 +122,7 @@ flowchart TD
 
 ---
 
-## 五、目录结构
+## 六、目录结构
 
 ```
 D:\models\edurag\
@@ -159,7 +159,7 @@ D:\models\edurag\
 
 ---
 
-## 六、依赖
+## 七、依赖
 
 ```
 numpy
@@ -173,7 +173,7 @@ uvicorn
 
 ---
 
-## 七、配置说明
+## 八、配置说明
 
 `.env.example` 复制为 `.env` 后按需修改（不配置也能自动读取）：
 
@@ -204,7 +204,7 @@ FIXRAG_EMBED_MODEL=text-embedding-v1
 
 ---
 
-## 八、在本机（Windows）运行
+## 九、在本机（Windows）运行
 
 ```bat
 cd /d D:\models\edurag
@@ -230,7 +230,7 @@ uvicorn app:app --host 127.0.0.1 --port 8000
 
 ---
 
-## 九、（可选）在 WSL 中运行
+## 十、（可选）在 WSL 中运行
 
 ```bash
 cd /mnt/d/models/edurag
@@ -243,7 +243,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 十、API 接口
+## 十一、API 接口
 
 | 方法 | 路径 | 说明 |
 | --- | --- | --- |
@@ -272,7 +272,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 十一、前端交互（内置页面）
+## 十二、前端交互（内置页面）
 
 - **对话**：输入问题，逐字流式渲染回答；回答上方分两个**独立面板**：
   - **🧠 思考过程**：展示 LLM 流式返回的 thinking 内容（`reasoning_content`，需思考模型如 `qwq-plus`；非思考模型显示提示）；
@@ -286,7 +286,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 十二、知识库构建与维护
+## 十三、知识库构建与维护
 
 1. 把家电维修手册、故障案例库等文档放入 `data/docs/`（支持 `.md` / `.pdf`）。
 2. 执行 `python build_kb.py`（或调用 `POST /build`），系统会：加载文档 → 父/子分块 → DashScope 向量化 → 保存到 `kb_store/`。
@@ -295,7 +295,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 十三、文本归一化
+## 十四、文本归一化
 
 为减少字符形态差异对向量检索的干扰，系统在**入库**与**查询**两侧对文本做统一归一化：
 
@@ -305,7 +305,7 @@ uvicorn app:app --host 0.0.0.0 --port 8000
 
 ---
 
-## 十四、RAGAS 评测
+## 十五、RAGAS 评测
 
 用 RAGAS 框架的四个经典指标对本系统做**实际评测**（脚本 `eval/ragas_eval.py`），验证检索与生成两个侧面的质量：
 
@@ -332,7 +332,7 @@ cd /d D:\models\edurag
 
 ---
 
-## 十五、常见问题（FAQ）
+## 十六、常见问题（FAQ）
 
 **Q1：启动时提示端口被占用？**
 旧 uvicorn 进程仍占用 8000 端口。用 `netstat -ano | findstr :8000` 找到 PID，`taskkill /PID <pid> /F` 后重新运行 `run.bat`。
@@ -351,7 +351,7 @@ cd /d D:\models\edurag
 
 ---
 
-## 十六、说明
+## 十七、说明
 
 - embedding 使用 DashScope **`text-embedding-v1`**（1536 维）；生成 LLM 默认走 **OpenRouter 免费模型链**（由 `FIXRAG_GEN_LLM_MODEL` 配置，DashScope `qwen-plus` 仅作兜底，可在 `.env` 修改）。
 - 原项目用 bge-m3 本地混合编码 + Milvus；本项目用 DashScope 云端 embedding + 轻量 numpy 向量库，达到"功能相同"的效果，本机即可直接运行。
