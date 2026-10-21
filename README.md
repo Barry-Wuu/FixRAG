@@ -247,6 +247,34 @@ D:\models\fixrag\
 
 ---
 
+### 数据库说明
+
+系统包含三个本地存储，即前端页面的「三个数据库」栏目（对应接口 `/db/hot_qa`、`/db/qa_cache`、`/db/vectorstore`）：
+
+| 存储 | 扮演角色 | 数据文件 | 字段 | 说明 |
+| --- | --- | --- | --- | --- |
+| `hot_qa`<br/>高频问答库 | MySQL | `kb_store/qa.db` | `question` | 问题原文（主键） |
+| | | | `answer` | 标准答案 |
+| | | | `hits` | 命中次数（默认 0，每次命中自动 +1） |
+| | | | `intent` | 意图分类（预置数据默认「专业咨询」） |
+| `qa_cache`<br/>运行时缓存 | Redis | `kb_store/qa.db` | `question` | 用户问题（主键） |
+| | | | `answer` | 缓存答案 |
+| | | | `hits` | 命中次数 |
+| | | | `updated_at` | 最后命中/更新时间（SQLite datetime） |
+| | | | `intent` | 意图分类（专业咨询 / AI 相关通用知识等） |
+| | | | `strategy` | 回答策略（direct / hyde / sub_query / backtrack） |
+| | | | `embedding` | 问题向量（JSON 数组），用于语义去重与同义命中 |
+| `kb_store`<br/>知识库向量库 | FAISS/numpy | `chunks.json` + `embeddings.npy` | `child_id` | 子块 ID（形如 `doc_0_parent_0_child_0`） |
+| | | | `parent_id` | 父块 ID（形如 `doc_0_parent_0`） |
+| | | | `child_text` | 子块文本（精确检索与前端展示） |
+| | | | `parent_text` | 父块文本（作为上下文送入 LLM） |
+| | | | `source` | 文档标题/来源 |
+| | | | `file_path` | 源文件路径 |
+
+> `hot_qa` 与 `qa_cache` 同存于 `kb_store/qa.db`（SQLite，纯本地，无需服务器）；向量库由 `chunks.json`（元数据）+ `embeddings.npy`（稠密向量）构成。
+
+---
+
 ### 依赖
 
 ```
