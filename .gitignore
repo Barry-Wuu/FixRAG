@@ -4,3 +4,7 @@ __pycache__/
 kb_store/
 .env
 *.rsls
+
+# 运行日志（本地保留，不入库）
+.app_*.log
+.eval_*.log
