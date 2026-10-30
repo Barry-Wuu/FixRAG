@@ -271,6 +271,14 @@ D:\models\fixrag\
 | | | | `source` | 文档标题/来源 |
 | | | | `file_path` | 源文件路径 |
 
+**父子切块参数**（`src/config.py`，均可用环境变量覆盖）：
+
+| 参数 | 默认值 | 含义 |
+| --- | --- | --- |
+| `PARENT_CHUNK_SIZE` | `1200` | 父块长度（字符数），检索后作为上下文整块送入 LLM |
+| `CHILD_CHUNK_SIZE` | `300` | 子块长度（字符数），精确检索与前端展示的粒度 |
+| `CHUNK_OVERLAP` | `50` | 相邻切块的重叠长度（字符数），避免关键语义在边界处被切断 |
+
 > `hot_qa` 与 `qa_cache` 同存于 `kb_store/qa.db`（SQLite，纯本地，无需服务器）；向量库由 `chunks.json`（元数据）+ `embeddings.npy`（稠密向量）构成。
 
 **向量索引算法**：`kb_store` 不依赖 FAISS / HNSW / 倒排索引等第三方向量库，采用「稠密全量遍历 + 稀疏 BM25」双路检索，再经 RRF 融合重排：
