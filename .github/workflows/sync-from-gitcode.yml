@@ -1,0 +1,37 @@
+name: Sync from GitCode
+
+# 自动从 GitCode 仓库拉取最新内容并同步到 GitHub。
+# 触发方式：
+#   1. schedule：每小时整点自动运行
+#   2. workflow_dispatch：在 Actions 页面手动运行
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-gitcode
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch from GitCode
+        env:
+          GITCODE_TOKEN: ${{ secrets.GITCODE_TOKEN }}
+        run: |
+          git remote add gitcode "https://Barry_Wu_:${GITCODE_TOKEN}@gitcode.com/Barry_Wu_/FixRAG.git"
+          git fetch --prune --tags gitcode
+
+      - name: Force push master + tags to GitHub
+        run: |
+          git push --force --tags origin gitcode/master:master
